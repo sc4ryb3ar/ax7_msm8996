@@ -1135,4 +1135,11 @@ config FORCE_TOUCH_NDT
        default y
        help
          This driver provides support for Force Touch by NDT.
+
+config SWEEP2SLEEP
+        tristate "Sweep to put device to sleep"
+        default y
+        help
+          Say Y here to support sweep2sleep
+
 endif
