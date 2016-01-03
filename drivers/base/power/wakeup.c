@@ -21,7 +21,7 @@
 
 #include "power.h"
 
-<<<<<<< HEAD
+
 
 static bool enable_qcom_rx_wakelock_ws = true;
 module_param(enable_qcom_rx_wakelock_ws, bool, 0644);
@@ -50,14 +50,17 @@ char *wakelock_debug_zte;
 module_param_named(wakelock_debug, wakelock_debug_zte, charp, 0600);
 #endif
 /*ZTE ----*/
-=======
+
 static bool enable_wlan_rx_wake_ws = true;
 module_param(enable_wlan_rx_wake_ws, bool, 0644);
 static bool enable_wlan_ctrl_wake_ws = true;
 module_param(enable_wlan_ctrl_wake_ws, bool, 0644);
 static bool enable_wlan_wake_ws = true;
 module_param(enable_wlan_wake_ws, bool, 0644);
->>>>>>> 41c88aa... wakeup: add toggles for wlan wakelocks. They are all enabled by default, it's up to the user and I provide no support if Wi-Fi stops working normally without these locks enabled. This is for advanced users
+
+static bool enable_bluedroid_timer_ws = true;
+module_param(enable_bluedroid_timer_ws, bool, 0644);
+
 
 /*
  * If set, the suspend/hibernate code will abort transitions to a sleep state
@@ -571,6 +574,9 @@ static void wakeup_source_activate(struct wakeup_source *ws)
 
 	if (!enable_wlan_wake_ws && !strcmp(ws->name, "wlan_wake"))
                 return;
+
+	if (!enable_bluedroid_timer_ws && !strcmp(ws->name, "bluedroid_timer"))
+		return;
 
 	/*
 	 * active wakeup source should bring the system
