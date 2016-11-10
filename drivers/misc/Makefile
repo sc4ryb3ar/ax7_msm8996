@@ -69,6 +69,9 @@ obj-$(CONFIG_USB_EXT_TYPE_C_PERICOM)	+= type-c-pericom.o
 obj-$(CONFIG_USB_EXT_TYPE_C_TI)		+= type-c-ti.o
 obj-$(CONFIG_QPNP_MISC) 	+= qpnp-misc.o
 obj-$(CONFIG_GPIO_SWITCH)	+= gpio_switch.o
-#add by xcb
-obj-$(CONFIG_BOOTLOADER_LOG)	+= bootloader_log.o
+
 obj-$(CONFIG_FORCE_FAST_CHARGE) += fastchg.o
+
+obj-$(CONFIG_BLX)		+= blx.o
+
+
