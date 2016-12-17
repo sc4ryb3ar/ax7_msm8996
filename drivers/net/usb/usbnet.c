@@ -2279,7 +2279,9 @@ free_urb:
 unbind:
 	if (info->unbind)
 		info->unbind (dev, udev);
-free_netdevice:
+
+out1:
+
 	/* subdrivers must undo all they did in bind() if they
 	 * fail it, but we may fail later and a deferred kevent
 	 * may trigger an error resubmitting itself and, worse,
@@ -2288,7 +2290,7 @@ free_netdevice:
 	cancel_work_sync(&dev->kevent);
 	del_timer_sync(&dev->delay);
 	free_netdev(net);
-exit:
+out:
 	return status;
 }
 EXPORT_SYMBOL_GPL(usbnet_probe);
