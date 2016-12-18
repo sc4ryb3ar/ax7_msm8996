@@ -32,8 +32,12 @@ obj-$(CONFIG_CPU_FREQ_GOV_COMMON)	+= cpufreq_governor.o
 obj-$(CONFIG_CPU_FREQ_GOV_ZZMOOVE)      += cpufreq_zzmoove.o
 obj-$(CONFIG_CPU_BOOST)			+= cpu-boost.o
 
+<<<<<<< HEAD
 obj-$(CONFIG_CPU_FREQ_GOV_LIONFISH)	+= cpufreq_lionfish.o
 >>>>>>> 7763270... add Despair gov
+=======
+obj-$(CONFIG_CPU_FREQ_GOV_LIONFISH)	   += cpufreq_lionfish.o
+>>>>>>> 48aff91... add Lionfish gov
 obj-$(CONFIG_CPUFREQ_DT)		+= cpufreq-dt.o
 
 ##################################################################################
