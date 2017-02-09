@@ -121,6 +121,25 @@ config CPU_FREQ_DEFAULT_GOV_INTERACTIVE
 	  you to get a full dynamic cpu frequency capable system by simply
 	  loading your cpufreq low-level hardware driver, using the
 	  'interactive' governor for latency-sensitive workloads.
+<<<<<<< HEAD
+=======
+	  
+config CPU_FREQ_DEFAULT_GOV_BLU_ACTIVE
+ 	bool "blu_active"
+ 	select CPU_FREQ_GOV_BLU_ACTIVE
+ 	help
+ 	  Use the CPUFreq governor 'blu_active' as default. This allows
+ 	  you to get a full dynamic cpu frequency capable system by simply
+ 	  loading your cpufreq low-level hardware driver, using the
+ 	  'interactive' governor for latency-sensitive workloads.
+
+config CPU_FREQ_DEFAULT_GOV_DESPAIR
+ 	bool "despair"
+ 	select CPU_FREQ_GOV_DESPAIR
+ 	help
+ 
+ 
+>>>>>>> 7763270... add Despair gov
 
 config CPU_FREQ_DEFAULT_GOV_IMPULSE
 	bool "impulse"
@@ -378,6 +397,29 @@ config CPU_BOOST
 	  - Migration of important threads from one CPU to another.
 
 	  If in doubt, say N.
+<<<<<<< HEAD
+=======
+	  
+config CPU_FREQ_GOV_BLU_ACTIVE
+ 	tristate "'blu_active' cpufreq policy governor"
+ 	help
+ 	  'blu_active' - This driver adds a dynamic cpufreq policy governor
+ 	  designed for latency-sensitive workloads.
+ 
+ 	  This governor attempts to reduce the latency of clock
+ 	  increases so that the system is more responsive to
+ 	  interactive workloads.
+ 
+ 	  To compile this driver as a module, choose M here: the
+ 	  module will be called cpufreq_blu_active.
+ 
+ 	  If in doubt, say N.
+ 	  
+config CPU_FREQ_GOV_DESPAIR
+ 	tristate "'despair' cpufreq governor"
+ 	depends on CPU_FREQ
+ 
+>>>>>>> 7763270... add Despair gov
 
 menu "x86 CPU frequency scaling drivers"
 depends on X86
