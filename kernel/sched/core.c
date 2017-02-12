@@ -1,4 +1,4 @@
-/*
+	/*
  *  kernel/sched/core.c
  *
  *  Kernel scheduler and related syscalls
@@ -3443,6 +3443,18 @@ exit_early:
 		i++;
 	}
 }
+
+unsigned long sched_get_busy(int cpu)
+{
+	struct cpumask query_cpu = CPU_MASK_NONE;
+	struct sched_load busy;
+
+	cpumask_set_cpu(cpu, &query_cpu);
+	sched_get_cpus_busy(&busy, &query_cpu);
+
+	return busy.prev_load;
+}
+
 
 void sched_set_io_is_busy(int val)
 {
