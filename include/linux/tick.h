@@ -101,6 +101,11 @@ extern struct cpumask *tick_get_broadcast_mask(void);
 extern struct cpumask *tick_get_broadcast_oneshot_mask(void);
 #  endif
 
+enum tick_broadcast_state {
+	TICK_BROADCAST_EXIT,
+	TICK_BROADCAST_ENTER,
+};
+
 # endif /* BROADCAST */
 
 # ifdef CONFIG_TICK_ONESHOT
@@ -141,6 +146,17 @@ extern void hotplug_cpu__broadcast_tick_pull(int dead_cpu);
 #else
 static inline void hotplug_cpu__broadcast_tick_pull(int dead_cpu) { }
 #endif
+
+static inline int tick_broadcast_enter(void)
+{
+	return tick_broadcast_oneshot_control(TICK_BROADCAST_ENTER);
+}
+static inline void tick_broadcast_exit(void)
+{
+	tick_broadcast_oneshot_control(TICK_BROADCAST_EXIT);
+}
+
+
 
 extern void tick_nohz_idle_enter(void);
 extern void tick_nohz_idle_exit(void);
