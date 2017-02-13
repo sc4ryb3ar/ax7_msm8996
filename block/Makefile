@@ -21,13 +21,11 @@ obj-$(CONFIG_IOSCHED_CFQ)	+= cfq-iosched.o
 obj-$(CONFIG_IOSCHED_TEST)	+= test-iosched.o
 obj-$(CONFIG_IOSCHED_BFQ)	+= bfq-iosched.o
 obj-$(CONFIG_IOSCHED_TRIPNDROID)+= tripndroid-iosched.o
-<<<<<<< HEAD
 obj-$(CONFIG_IOSCHED_ZEN)	+= zen-iosched.o
 obj-$(CONFIG_IOSCHED_SIOPLUS)	+= sioplus-iosched.o
 +obj-$(CONFIG_IOSCHED_FIFO)	+= fifo-iosched.o
-=======
 obj-$(CONFIG_IOSCHED_VR)	+= vr-iosched.o
->>>>>>> c0738cd... block: add vr scheduler
+
 
 obj-$(CONFIG_BLOCK_COMPAT)	+= compat_ioctl.o
 obj-$(CONFIG_BLK_CMDLINE_PARSER)	+= cmdline-parser.o
