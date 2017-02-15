@@ -572,12 +572,6 @@ config TI_DRV2667
 	  To compile this driver as a module, choose M here: the
 	  module will be called ti_drv2667.
 
-config BLX
-	bool "Enable BLX"
-	default y
-	help
-	  Enable Battery Life eXtender
-
 config QPNP_MISC
 	tristate "QPNP Misc Peripheral"
 	depends on SPMI || MSM_SPMI
