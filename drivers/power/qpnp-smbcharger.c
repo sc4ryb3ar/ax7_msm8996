@@ -47,9 +47,6 @@
 #include <linux/fastchg.h>
 #endif
 
-#ifdef CONFIG_BLX
-#include <linux/blx.h>
-#endif
 
 /* Mask/Bit helpers */
 #define _SMB_MASK(BITS, POS) \
@@ -1020,10 +1017,6 @@ static bool is_src_detect_high(struct smbchg_chip *chip)
 	return reg &= USBIN_SRC_DET_BIT;
 }
 
-#ifdef CONFIG_BLX
-	int cap_level=0;
-#endif
-
 static void read_usb_type(struct smbchg_chip *chip, char **usb_type_name,
 				enum power_supply_type *usb_supply_type)
 {
@@ -1251,12 +1244,9 @@ static int get_prop_batt_capacity(struct smbchg_chip *chip)
 	else
 		report_zero=false;
 
-	#ifdef CONFIG_BLX
-	cap_level = get_cap_level();
-	
-	if((capacity >= 100-cap_level) && (get_prop_batt_status(chip) == POWER_SUPPLY_STATUS_FULL))
+	if((capacity >= 98) && (get_prop_batt_status(chip) == POWER_SUPPLY_STATUS_FULL))
 		return 100;
-	#endif
+
 	return capacity;
 }
 
@@ -1994,7 +1984,7 @@ static int smbchg_set_usb_current_max(struct smbchg_chip *chip,
 				pr_err("Couldn't set CMD_IL rc = %d\n", rc);
 				goto out;
 			}
-			chip->usb_max_current_ma = 900;
+			chip->usb_max_current_ma = 500;
 		}
 
 #ifdef CONFIG_FORCE_FAST_CHARGE
