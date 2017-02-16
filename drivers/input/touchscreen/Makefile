@@ -93,5 +93,3 @@ obj-$(CONFIG_TOUCHSCREEN_MSTAR21XX)	+= msg21xx_ts.o
 obj-$(CONFIG_TOUCHSCREEN_GT9XX)		+= gt9xx/
 obj-$(CONFIG_TOUCHSCREEN_SYNAPTICS_DSX) += synaptics_dsx_zte/
 obj-$(CONFIG_FORCE_TOUCH_NDT) += ndt_stress.o
-obj-$(CONFIG_SWEEP2SLEEP)		+= sweep2sleep.o
-

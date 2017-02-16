@@ -1129,18 +1129,10 @@ config TOUCHSCREEN_MAXIM_STI
 source "drivers/input/touchscreen/gt9xx/Kconfig"
 
 source "drivers/input/touchscreen/synaptics_dsx_zte/Kconfig"
-
 config FORCE_TOUCH_NDT
        tristate "Force Touch by NDT"
        depends on I2C && INPUT
        default y
        help
          This driver provides support for Force Touch by NDT.
-
-config SWEEP2SLEEP
-        tristate "Sweep to put device to sleep"
-        default y
-        help
-          Say Y here to support sweep2sleep
-
 endif
