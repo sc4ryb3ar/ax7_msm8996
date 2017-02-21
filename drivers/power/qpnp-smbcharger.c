@@ -47,6 +47,10 @@
 #include <linux/fastchg.h>
 #endif
 
+#ifdef CONFIG_BLX
+#include <linux/blx.h>
+#endif
+
 
 /* Mask/Bit helpers */
 #define _SMB_MASK(BITS, POS) \
@@ -1075,8 +1079,13 @@ static int get_prop_batt_status(struct smbchg_chip *chip)
 		return POWER_SUPPLY_STATUS_UNKNOWN;
 	}
 
-	if ((reg & BAT_TCC_REACHED_BIT)|| (capacity == 100))
+	#ifdef CONFIG_BLX
+	int cap_level = get_cap_level();
+
+	if ((reg & BAT_TCC_REACHED_BIT)|| (capacity == cap_level))
 		return POWER_SUPPLY_STATUS_FULL;
+
+	#endif
 
 	chg_inhibit = reg & CHG_INHIBIT_BIT;
 	if (chg_inhibit)
@@ -1244,10 +1253,14 @@ static int get_prop_batt_capacity(struct smbchg_chip *chip)
 	else
 		report_zero=false;
 
-	if((capacity >= 98) && (get_prop_batt_status(chip) == POWER_SUPPLY_STATUS_FULL))
+	#ifdef CONFIG_BLX
+	cap_level = get_cap_level();
+
+	if((capacity >= cap_level) && (get_prop_batt_status(chip) == POWER_SUPPLY_STATUS_FULL))
 		return 100;
 
 	return capacity;
+	#endif
 }
 
 #define DEFAULT_BATT_TEMP		200
