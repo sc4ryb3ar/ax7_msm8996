@@ -47,6 +47,10 @@
 #include <linux/fastchg.h>
 #endif
 
+#ifdef CONFIG_BLX
+#include <linux/blx.h>
+#endif
+
 
 /* Mask/Bit helpers */
 #define _SMB_MASK(BITS, POS) \
@@ -1075,8 +1079,18 @@ static int get_prop_batt_status(struct smbchg_chip *chip)
 		return POWER_SUPPLY_STATUS_UNKNOWN;
 	}
 
-	if ((reg & BAT_TCC_REACHED_BIT)|| (capacity == 100))
-		return POWER_SUPPLY_STATUS_FULL;
+	#ifdef CONFIG_BLX
+	int cap_level = get_cap_level();
+	
+	if (capacity < cap_level)
+		return POWER_SUPPLY_STATUS_CHARGING;
+
+	if ((reg & BAT_TCC_REACHED_BIT)|| (capacity == cap_level))
+
+		goto stop_charge;
+
+	/*return;*/
+	#endif
 
 	chg_inhibit = reg & CHG_INHIBIT_BIT;
 	if (chg_inhibit)
@@ -1107,6 +1121,14 @@ static int get_prop_batt_status(struct smbchg_chip *chip)
 out:
 	pr_smb_rt(PR_MISC, "CHGR_STS = 0x%02x\n", reg);
 	return status;
+
+stop_charge:
+
+	vote(chip->battchg_suspend_votable,USER_EN_VOTER,
+				true, 0);
+	return POWER_SUPPLY_STATUS_FULL;
+
+
 }
 
 #define BAT_PRES_STATUS			0x08
@@ -1244,10 +1266,14 @@ static int get_prop_batt_capacity(struct smbchg_chip *chip)
 	else
 		report_zero=false;
 
-	if((capacity >= 98) && (get_prop_batt_status(chip) == POWER_SUPPLY_STATUS_FULL))
-		return 100;
+	#ifdef CONFIG_BLX
+	int cap_level = get_cap_level();
+
+	if((capacity >= cap_level) && (get_prop_batt_status(chip) == POWER_SUPPLY_STATUS_FULL))
+		return capacity;
 
 	return capacity;
+	#endif
 }
 
 #define DEFAULT_BATT_TEMP		200
@@ -9276,3 +9302,4 @@ module_exit(smbchg_exit);
 MODULE_DESCRIPTION("QPNP SMB Charger");
 MODULE_LICENSE("GPL v2");
 MODULE_ALIAS("platform:qpnp-smbcharger");
+
