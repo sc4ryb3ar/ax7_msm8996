@@ -1083,11 +1083,13 @@ static int get_prop_batt_status(struct smbchg_chip *chip)
 	int cap_level = get_cap_level();
 	
 	if (capacity < cap_level)
-		return POWER_SUPPLY_STATUS_CHARGING;
 
-	if ((reg & BAT_TCC_REACHED_BIT)|| (capacity == cap_level))
+		goto cont_charge;
+
+	if/* ((reg & BAT_TCC_REACHED_BIT)||*/ (capacity == cap_level)
 
 		goto stop_charge;
+		
 
 	/*return;*/
 	#endif
@@ -1126,8 +1128,24 @@ stop_charge:
 
 	vote(chip->battchg_suspend_votable,USER_EN_VOTER,
 				true, 0);
+	vote(chip->usb_suspend_votable,USER_EN_VOTER,
+				true, 0);
+	vote(chip->dc_suspend_votable,USER_EN_VOTER,
+				true, 0);
+	
 	return POWER_SUPPLY_STATUS_FULL;
 
+cont_charge:
+
+	
+	vote(chip->battchg_suspend_votable,USER_EN_VOTER,
+				false, 0);
+	vote(chip->usb_suspend_votable,USER_EN_VOTER,
+				false, 0);
+	vote(chip->dc_suspend_votable,USER_EN_VOTER,
+				false, 0);
+	
+	return POWER_SUPPLY_STATUS_CHARGING;
 
 }
 
