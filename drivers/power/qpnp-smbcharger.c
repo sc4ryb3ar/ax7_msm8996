@@ -9321,4 +9321,7 @@ MODULE_DESCRIPTION("QPNP SMB Charger");
 MODULE_LICENSE("GPL v2");
 MODULE_ALIAS("platform:qpnp-smbcharger");
 
+<<<<<<< HEAD
 
+=======
+>>>>>>> c0bf03aba5aadfd3be59b5de3cfda527c5c02583
