@@ -13,7 +13,7 @@
 #include <linux/miscdevice.h>
 #include <linux/blx.h>
 
-static int charging_cap_level = 100;
+static int charging_cap_level = 97;
 
 static ssize_t blx_cap_level_read(struct device * dev, struct device_attribute * attr, char * buf)
 {
