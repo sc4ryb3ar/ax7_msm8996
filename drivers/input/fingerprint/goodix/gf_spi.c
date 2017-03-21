@@ -611,6 +611,14 @@ static int gf_probe(struct platform_device *pdev)
     gf_dev->device_available = 0;
     gf_dev->fb_black = 0;
 
+    //0:Goodix 1:Synapatics
+    if (!is_goodix_fp()) {
+        pr_info("<HW> not Goodix fingerprint hw, skip\n");
+        return 0;
+    } else {
+        pr_info("<HW> Goodix fingerprint hw detected\n");
+    }
+
     if (gf_parse_dts(gf_dev))
         goto error;
     /*
@@ -856,9 +864,7 @@ static int __init gf_init(void)
 
     pr_info(" status = 0x%x\n", status);
     FUNC_EXIT();
-
-out:
-	return 0;
+    return 0;       //status;
 }
 
 module_init(gf_init);
