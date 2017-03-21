@@ -864,6 +864,8 @@ static int __init gf_init(void)
 
     pr_info(" status = 0x%x\n", status);
     FUNC_EXIT();
+	
+    out:	
     return 0;       //status;
 }
 
