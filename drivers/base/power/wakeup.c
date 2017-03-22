@@ -545,25 +545,6 @@ static void wakeup_source_activate(struct wakeup_source *ws)
 {
 	unsigned int cec;
 
-	if (((!enable_wlan_rx_wake_ws && !strcmp(ws->name, "wlan_rx_wake")) ||
-		(!enable_wlan_ctrl_wake_ws &&
-			!strcmp(ws->name, "wlan_ctrl_wake")) ||
-		(!enable_wlan_wake_ws &&
-			!strcmp(ws->name, "wlan_wake")) ||
-		(!enable_bluedroid_timer_ws &&
-			!strcmp(ws->name, "bluedroid_timer")) ||
-		(!enable_ipa_ws &&
-			!strcmp(ws->name, "IPA_WS")))) {
-
-		/*
-		 * let's try and deactivate this wakeup source since the user
-		 * clearly doesn't want it. The user is responsible for any
-		 * adverse effects and has been warned about it
-		 */
-		wakeup_source_deactivate(ws);
-		return;
-	}
-
 	/*
 	 * active wakeup source should bring the system
 	 * out of PM_SUSPEND_FREEZE state
@@ -842,8 +823,26 @@ void pm_print_active_wakeup_sources(void)
 	rcu_read_lock();
 	list_for_each_entry_rcu(ws, &wakeup_sources, entry) {
 		if (ws->active) {
+			int wslen = strlen(ws->name);
+
 			pr_info("active wakeup source: %s\n", ws->name);
-			active = 1;
+
+			if ((!enable_ipa_ws && !strncmp(ws->name, "IPA_WS", wslen)) ||
+				(!enable_wlan_extscan_wl_ws &&
+					!strncmp(ws->name, "wlan_extscan_wl", wslen)) ||
+				(!enable_qcom_rx_wakelock_ws &&
+					!strncmp(ws->name, "qcom_rx_wakelock", wslen)) ||
+				(!enable_wlan_ws &&
+					!strncmp(ws->name, "wlan", wslen)) ||
+				(!enable_timerfd_ws &&
+					!strncmp(ws->name, "[timerfd]", wslen)) ||
+				(!enable_netlink_ws &&
+					!strncmp(ws->name, "NETLINK", wslen))) {
+				wakeup_source_deactivate(ws);
+				pr_info("forcefully deactivate wakeup source: %s\n", ws->name);
+			} else {
+				active = 1;
+			}
 		} else if (!active &&
 			   (!last_activity_ws ||
 			    ktime_to_ns(ws->last_time) >
