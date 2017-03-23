@@ -531,6 +531,16 @@ static int pil_setup_region(struct pil_priv *priv, const struct pil_mdt *mdt)
 				&priv->info->size);
 	}
 
+#ifdef CONFIG_VENDOR_VLOG
+	if (vendor_log_get_memory_addr() &&
+			vendor_log_get_memory_size()) {
+		ret = hyp_assign_phys(vendor_log_get_memory_addr(),
+				vendor_log_get_memory_size(), srcVM, 2,
+				destVM, destVMperm, 1);
+		pil_info(desc, "assign sdlog memoy back to linux\n");
+	}
+#endif
+
 	return ret;
 }
 
