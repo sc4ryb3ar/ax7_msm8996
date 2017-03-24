@@ -170,7 +170,6 @@ static int create_fixed_stream_quirk(struct snd_usb_audio *chip,
 	if (altsd->bNumEndpoints < 1) {
 		err = -EINVAL;
 		goto error;
-
 	}
 
 	fp->protocol = altsd->bInterfaceProtocol;
