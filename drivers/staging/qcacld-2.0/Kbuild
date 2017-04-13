@@ -168,7 +168,7 @@ endif
 # Feature flags which are not (currently) configurable via Kconfig
 
 #Whether to build debug version
-BUILD_DEBUG_VERSION := 1
+BUILD_DEBUG_VERSION ?= 1
 
 #Enable this flag to build driver in diag version
 BUILD_DIAG_VERSION := 1
@@ -980,6 +980,7 @@ CDEFINES :=	-DANI_LITTLE_BYTE_ENDIAN \
 		-DANI_LOGDUMP \
 		-DWLAN_PERF \
 		-DPTT_SOCK_SVC_ENABLE \
+		-Wall\
 		-Werror\
 		-D__linux__ \
 		-DHAL_SELF_STA_PER_BSS=1 \
@@ -1127,6 +1128,10 @@ ifeq ($(BUILD_DEBUG_VERSION),1)
 CDEFINES +=	-DWLAN_DEBUG \
 		-DPE_DEBUG_LOGW \
 		-DPE_DEBUG_LOGE
+endif
+
+ifeq ($(CONFIG_QCACLD_SPAMMY_DEBUG),y)
+CDEFINES += -DDEBUG
 endif
 
 ifeq ($(CONFIG_SLUB_DEBUG_ON),y)
