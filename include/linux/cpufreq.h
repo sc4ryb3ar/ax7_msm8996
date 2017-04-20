@@ -534,6 +534,12 @@ extern struct cpufreq_governor cpufreq_gov_zzmoove;
 #elif defined(CONFIG_CPU_FREQ_DEFAULT_GOV_LIONFISH)
 extern struct cpufreq_governor cpufreq_gov_lionfish;
 #define CPUFREQ_DEFAULT_GOVERNOR (&cpufreq_gov_lionfish)
+#elif defined(CONFIG_CPU_FREQ_DEFAULT_GOV_HELLSACTIVE)
+extern struct cpufreq_governor cpufreq_gov_hellsactive;
+#define CPUFREQ_DEFAULT_GOVERNOR (&cpufreq_gov_hellsactive)
+#elif defined(CPU_FREQ_DEFAULT_GOV_CULTIVATION)
+extern struct cpufreq_governor cpufreq_gov_cultivation;
+#define CPUFREQ_DEFAULT_GOVERNOR (&cpufreq_gov_cultivation)
 #endif
 
 /*********************************************************************

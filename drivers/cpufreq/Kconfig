@@ -173,6 +173,12 @@ config CPU_FREQ_DEFAULT_GOV_ELEMENTALX
 	help
 	  Use the CPUFreq governor 'elementalx' as default.
 
+config CPU_FREQ_DEFAULT_GOV_HELLSACTIVE
+	bool "hellsactive"
+	select CPU_FREQ_GOV_HELLSACTIVE
+	help
+	Use the CPUfreq governor 'hellsactive' as default.
+
 endchoice
 
 config CPU_FREQ_GOV_PERFORMANCE
@@ -350,6 +356,10 @@ config CPU_FREQ_GOV_CULTIVATION
 	depends on CPU_FREQ
 	help
 	  'cultivation' - another tuned interactive with extra options
+
+config CPU_FREQ_GOV_HELLSACTIVE
+	tristate "'hellsactive' cpufreq governor"
+	depends on CPU_FREQ
 
 config CPUFREQ_DT
 	tristate "Generic DT based cpufreq driver"
