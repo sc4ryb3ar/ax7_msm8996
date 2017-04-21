@@ -1384,12 +1384,12 @@ cpu_pmu_reset(void)
 }
 arch_initcall(cpu_pmu_reset);
 
- * PMU hardware loses all context when a CPU goes offline.
+/* PMU hardware loses all context when a CPU goes offline.
  * When a CPU is hotplugged back in, since some hardware registers are
  * UNKNOWN at reset, the PMU must be explicitly reset to avoid reading
  * junk values out of them.
  */
-static int __cpuinit cpu_pmu_notify(struct notifier_block *b,
+/*static int __cpuinit cpu_pmu_notify(struct notifier_block *b,
                                     unsigned long action, void *hcpu)
 {
 	int cpu = (unsigned long)hcpu;
@@ -1404,7 +1404,7 @@ static int __cpuinit cpu_pmu_notify(struct notifier_block *b,
 	else
 		return NOTIFY_DONE;
 	return NOTIFY_OK;
-}
+} */
 
 #ifdef CONFIG_CPU_PM
 static void cpu_pm_pmu_setup(struct arm_pmu *armpmu, unsigned long cmd)
@@ -1573,6 +1573,44 @@ static void armpmu_hotplug_disable(void *parm_pmu)
  * UNKNOWN at reset, the PMU must be explicitly reset to avoid reading
  * junk values out of them.
  */
+
+static int cpu_has_active_perf(int cpu)
+{
+	struct pmu_hw_events *hw_events;
+	int enabled;
+
+	if (!cpu_pmu)
+		return 0;
+	hw_events = &per_cpu(cpu_hw_events, cpu);
+	enabled = bitmap_weight(hw_events->used_mask, cpu_pmu->num_events);
+
+	if (enabled)
+		/*Even one event's existence is good enough.*/
+		return 1;
+
+	return 0;
+}
+
+static void armpmu_update_counters(void)
+{
+	struct pmu_hw_events *hw_events;
+	int idx;
+
+	if (!cpu_pmu)
+		return;
+
+	hw_events = cpu_pmu->get_hw_events();
+
+	for (idx = 0; idx <= cpu_pmu->num_events; ++idx) {
+		struct perf_event *event = hw_events->events[idx];
+
+		if (!event)
+			continue;
+
+		cpu_pmu->pmu.read(event);
+	}
+}
+
 static int __cpuinit cpu_pmu_notify(struct notifier_block *b,
 				    unsigned long action, void *hcpu)
 {
@@ -1659,7 +1697,7 @@ static int perf_cpu_pm_notifier(struct notifier_block *self, unsigned long cmd,
 		if (cpu_pmu->save_pm_registers)
 			cpu_pmu->save_pm_registers((void *)lcpu);
 		if (cpu_has_active_perf(cpu)) {
-			armpmu_update_counters(NULL);
+			armpmu_update_counters();
 			pmu = &cpu_pmu->pmu;
 			pmu->pmu_disable(pmu);
 		}
