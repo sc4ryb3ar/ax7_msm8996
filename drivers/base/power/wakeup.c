@@ -15,11 +15,14 @@
 #include <linux/seq_file.h>
 #include <linux/debugfs.h>
 #include <linux/types.h>
-#include <linux/display_state.h>
 #include <trace/events/power.h>
 #include <linux/moduleparam.h>
 
 #include "power.h"
+
+#ifdef CONFIG_STATE_NOTIFIER
+#include <linux/state_notifier.h>
+#endif
 
 
 /*ZTE ++++*/
@@ -857,7 +860,7 @@ void pm_print_active_wakeup_sources(void)
 	struct wakeup_source *last_activity_ws = NULL;
 
 	// kinda pointless to force this routine during screen on
-	if (is_display_on())
+	if (!state_suspended)
 		return;
 
 	rcu_read_lock();
