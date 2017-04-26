@@ -1,3 +1,4 @@
+CFLAGS_cpufreq_hellsactive.o := -Wno-pointer-to-int-cast
 # CPUfreq core
 obj-$(CONFIG_CPU_FREQ)			+= cpufreq.o freq_table.o
 
