@@ -80,7 +80,6 @@ obj-$(CONFIG_MSM_PFE_WA) += pfe-wa.o
 obj-$(CONFIG_MSM_PERFORMANCE) += msm_performance.o
 obj-$(CONFIG_ARCH_MSM8996) += msm_cpu_voltage.o
 obj-$(CONFIG_MSM_POWER) += msm_power.o
-obj-$(CONFIG_STATE_NOTIFIER)		+= state_notifier.o
 
 ifdef CONFIG_MSM_SUBSYSTEM_RESTART
 	obj-y += subsystem_notif.o
@@ -102,5 +101,16 @@ obj-$(CONFIG_MSM_KERNEL_PROTECT) += kernel_protect.o
 obj-$(CONFIG_MSM_RTB) += msm_rtb-hotplug.o
 obj-$(CONFIG_MSM_REMOTEQDSS) += remoteqdss.o
 obj-$(CONFIG_QCOM_SMCINVOKE) += smcinvoke.o
+obj-$(CONFIG_ARCH_MSM8996) += debug_memory.o
+obj-$(CONFIG_RAMDUMP_TAGS) += board-rdtags.o
+CFLAGS_board-rdtags.o  := \
+       -D"INFO_PRODUCT=\"$(if $(TARGET_PRODUCT),$(TARGET_PRODUCT),unknown)\"" \
+       -D"INFO_VARIANT= \
+       \"$(if $(TARGET_BUILD_VARIANT),$(TARGET_BUILD_VARIANT),unknown)\"" \
+       -D"INFO_BUILDID= \
+       \"$(if $(SEMC_SYSTEM_VERSION),$(SEMC_SYSTEM_VERSION),private)\""
+obj-$(CONFIG_ARCH_MSM8996) += console_setup.o
+obj-$(CONFIG_SUBSYS_LAST_ERR_LOG) += last_subsys_errlog.o
 
+obj-$(CONFIG_STATE_NOTIFIER)		+= state_notifier.o
 
