@@ -406,7 +406,6 @@ KBUILD_CPPFLAGS := -D__KERNEL__
 
 KBUILD_CFLAGS   := -Wno-error \
 		   -Wno-incompatible-pointer-types \
-		   -Wundef -Wstrict-prototypes -Wno-trigraphs \
 		   -fno-strict-aliasing -fno-common \
 		   -Werror-implicit-function-declaration \
 		   -mcpu=cortex-a57 -mtune=cortex-a57 \
